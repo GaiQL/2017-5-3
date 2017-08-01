@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		XML是一种数据格式:
+			'<person>
+				<name>小强</name>
+				<age>23</age>
+			</person>'
+		异步的JS与JSON，不止XML，不管什么格式，数据都是字符串
+		AJAX前后端的一种数据交互方式(前后端分离的技术)
+		
+		1、减少服务器压力；
+		2、优化用户体验，无刷新页面就能访问数据；
+		3、使用异步方式与服务器通信，不需要打断用户的操作，具有更加迅速的响应能力。
+		
+		不能在本地运行代码，因为后端的文件必须要在服务器下运行
+		
+		localhost
+		
+		写了端口的  localhost:88/1.html
+		
+		ajax难点:
+			拿到数据之后，如何操作数据
+			
+		JQ中的AJAX
+			$.ajax({
+				url:'后端接口地址','php/get.php';
+				data:{
+					拼接的字段：需要拼接的数据(前端传给后端的数据)
+					在开发中的时候，后端会给字段的，用什么字段访问到什么接口
+					pname:$('#user').val()
+				}
+				success:function(data){//回调，找到了这个人，执行这个函数
+					$span.text(data)
+					console.log(data)
+				}		
+			})
+			
+			$('#user').blur(function(){
+				$.ajax({
+					url:'php/get.php';
+					data:{
+						user:$('#user').val()
+					}
+					dataType:'json';//所有的数据都是字符串，处理后不用JSON转
+					success:function(data){//回调，找到了这个人，执行这个函数
+						$('#span').text(data)
+						console.log(data.msg)
+					}		
+				})
+			})
+		ajax交互模型(实现原理，实现机制)
+		
+		打电话机制:
+		1、买部手机
+		2、输入电话号码
+		3、拨号
+		4、等待对方接电话
+		5、通话
+		
+		
+		
+		---------------------------------------------------AJAX交互模型，必考项
+		
+		
+		
+		var user = document.getElementById('user');
+		var span = document.getElemengById('span');
+		user.onblur = function(){
+			// 1、创建一个ajax对象
+			var ajax = new XMLHttpRequest();
+			//2、填写请求地址、
+			//在IE浏览器下中文会被解析为URL编码格式，所以容易出问题，所以建议，只要input中的val值会出现中文就用encodeURI()转一下。
+			ajax.open('get','后端接口地址php/get.php?user='+encodeURI(user.value));
+			ajax.open('post','php/post.php')
+			xhr.setRequestHeader('content-type','application/x-www-form-urlencoded')
+			mothod:使用什么方式请求
+			url:请求的地址
+			boolean:是否异步
+			//3、发送请求
+			ajax.send()
+			ajax.send('user='+user.value);
+			//4、等待服务器响应
+			ajax.onload = function(){
+				//5、通话
+				//ajax.responseText   后端处理完成之后返回的数据
+				span.innerHTML = ajax.responseText;
+				
+				/*
+					var data = JSON.parse(ajax.responseText);//转成对象
+					if(data.code){
+						//失败
+						user.className = 'red';
+					}else{
+						//成功
+						user.className = 'green';
+					}
+				 	span.innerHTML = data.msg;
+				*/
+			}
+		}
+			
+		1、文件夹不要取中文，有中文就挂
+		2、运行的时候在服务器运行，不要在本地运行
+		
+		get与post的区别:
+			post:
+				通过send发送前端数据给后端;
+				相对安全(关于用户的信息会用post或传文件的时候);
+				体积理论上来说是无限大,(但是后端会做限制);
+				在send前设置一个setRequestHeader();
+			get:
+				通过浏览器的URL地址栏来发送数据给后端;
+				相对不安全(只要不跟用户信息打交道或者在数据一定范围都可以使用get);
+				体积就受浏览器的限制，(不同浏览器有不同的限制);
+				不用设置请求头;
+				encodeURI(),中文转编码
+				decodeURI(),编码转中文
+</html>

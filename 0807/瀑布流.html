@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      *{
+        padding:0;
+        margin:0;
+      }
+      body{
+        background:skyblue;
+      }
+      ul{
+        width:1050px;
+        margin:0 auto;
+        list-style:none;
+      }
+      li{
+        float:left;
+        width:236px;
+        margin:8px;
+      }
+      img{
+        width:236px;
+        border: none;
+        display: block;
+        margin-top:10px;
+        border:1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </body>
+  <script src="jquery-3.2.1.js"></script>
+  <script>
+  //一个寻找最短li的函数，下一张图片放在最短的li下面，li浮动布局
+  //ajax请求数据
+  //数据请求到后创建标签渲染页面。
+  //滚动请求，把ajax封装成函数，判断li
+  //当前最短li的内容高度   《=   window窗口的可视高度  +  滚动条距离
+  //开关   为什么一次会加载很多页数据
+  //滚轮事件会触发多次，所以会加载很多，设置开关，第一次触发关闭开关，
+  //等50张图片全部加载完再打开开关，只会触发一次请求。
+  var num = 1;
+  var onOff = true;
+  $(window).scroll(function(){
+    var index = $('li').eq(minHeight());
+    if(index.height() <= $(window).innerHeight() + $(window).scrollTop()){
+      if(onOff){
+        num++;
+        xr();
+      }
+    };
+
+  })
+  xr();
+  function xr(){
+    onOff = false;
+    $.ajax({
+      url:'http://www.wookmark.com/api/json/popular?callback=?',
+      dataType:'jsonp',
+      success:function(data){
+        console.log(data);
+        $.each(data,function(i,e){
+          const img = $(`<img src="${e.preview}"/>`)
+          img[0].onload = function(){
+            $('li').eq(minHeight()).append(this);
+          }
+        })
+        onOff = true;
+      }
+    })
+  }
+  console.log(minHeight());
+  function minHeight(){
+    var arr = [];
+    var lis = $('li');
+    var num = 0;
+    $.each(lis,function(i,e){
+      arr.push(e.scrollHeight);
+    })
+    //把arr从小到大排列，返回arr的第一个
+    //把Math.min的方法给arr，然后再用得到的值找到那个li的索引
+    num = Math.min.apply(null,arr);
+    return arr.findIndex(e=>e==num);
+  }
+  </script>
+</html>

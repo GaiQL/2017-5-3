@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+    *{
+      margin:0;
+      padding:0;
+    }
+    body{
+      background:skyblue;
+    }
+    ul{
+      margin:0 auto;
+      list-style:none;
+      position:relative;
+    }
+    li{
+      position:absolute;
+      border: 1px solid #ccc;
+      width:236px;
+      transition: .5s;
+    }
+    img{
+      width:236px;
+      border: none;
+      display: block;
+    }
+    </style>
+  </head>
+  <body>
+    <ul>
+    </ul>
+  </body>
+  <script src="jquery-3.2.1.js"></script>
+  <script>
+    var oneW = 236;
+    var marginL = 10;
+    var iW = $(window).innerWidth();
+    var ActW = oneW + marginL;//占位宽度
+  	var len = Math.floor(iW / ActW);//一排放几个
+  	var num = 0;
+  	var arrT = [];
+  	var arrL = [];
+
+    $('ul').width(ActW*len-marginL);
+
+    for(var i=0;i<len;i++){
+      arrT.push(0);
+      arrL.push(ActW * i);
+    }
+    xr();
+    function xr(){
+      $.ajax({
+        url:'http://www.wookmark.com/api/json/popular?callback=?',
+        dataType:'jsonp',
+        success:function(data){
+          $.each(data,function(i,e){
+            const li = $('<li>')
+            const img = $(`<img src="${e.preview}"/>`)
+            let iH = (e.height*oneW)/e.width;
+            img[0].onload = function(){
+              li.append(this);
+              li.css({
+                top:arrT[minarrT()],
+                left:arrL[minarrT()]
+              })
+              $('ul').append(li);
+              arrT[minarrT()] += (iH+10);
+            }
+          })
+        }
+      })
+    }
+    $(window).resize(function(){
+      let iW = $(window).innerWidth() + marginL;
+      let len = Math.floor(iW / ActW);
+      $('ul').width(ActW * len - marginL);
+      arrT.length = arrL.length = 0;
+      for(var i=0;i<len;i++){
+        arrT.push(0);
+        arrL.push(ActW * i);
+      }
+      $('li').each(function(i,e){
+        $(e).css({
+          left:arrL[minarrT()],
+          top:arrT[minarrT()]
+        });
+        arrT[minarrT()] += ($(e).height() + 10);
+      });
+    });
+    function minarrT(){
+      var num = 0;
+      num = Math.min.apply(null,arrT);
+      return arrT.findIndex(e=>e==num);
+    }
+  </script>
+</html>

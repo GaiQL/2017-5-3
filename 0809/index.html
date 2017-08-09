@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    原生 -> jQuery -> 模板引擎(专门把渲染页面的逻辑抽离出来)
+
+    angular(MVVM框架26734) -> React(facebook73074) -> vue(MVVM62819)
+    vue双向数据绑定
+    React:是MVC中的专注于View层的前端框架
+    虚拟DOM：
+        其实就是一个描述元素的对象
+
+    1、创建React对象的时候名字*****一定要大写*****
+
+    2、把虚拟的DOM放到页面，
+
+    虽然操作可以将一个标签渲染到页面，但是写起来很不方便，
+    如果有种写法跟写HTML类似就更好了
+
+    注意：
+      1、在jsx语法中class要写成className。
+      2、顶层只能有一个标签。
+      3、表单元素需要闭合。
+
+    getInitialState:初始化状态，当这个状态中的值发生变化的时候
+    就会更新DOM
+
+    更改状态:              this.setState({})
+    给元素身上绑定事件：    onClick={this.click}
+    定义事件:              在render上下定义，和render函数是平级关系，创建一个事件函数
+    输出：                 {}
+
+    组件化开发：
+        实现低耦合高内聚，玩的是团队、协作。
+        创建一个组件
+        状态   通信   事件
+
+        初始化状态在getInitialState
+        使用getInitialState中的数据，用this.state
+  </body>
+</html>

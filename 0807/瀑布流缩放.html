@@ -27,11 +27,22 @@
       border: none;
       display: block;
     }
+    #sq{
+      position:fixed;
+      right:0;
+      bottom:0;
+      background:yellow;
+      width:100px;
+    }
     </style>
   </head>
   <body>
     <ul>
     </ul>
+    <div id="sq">
+        <p id="s">上一页</p>
+        <p id="x">下一页</p>
+    </div>
   </body>
   <script src="jquery-3.2.1.js"></script>
   <script>
@@ -43,6 +54,47 @@
   	var num = 0;
   	var arrT = [];
   	var arrL = [];
+    //arrT和aaL一排个数，放top和left
+    //每次图片加载完成后，找到arrT中最小的哪一个的索引
+    //让当前图片等于arrT[索引]，arrL[索引]，计算当前图片高度，当前arrT加上此高度
+    //当窗口发生改变时，ul宽度重计，重新算出len，重置arrT和arrL数组
+    //找出当前索引，改变当前页面中所有Li的top和left值，每次加载完当前arrT加高度
+
+    //获取当前hash值，没有的话就设置默认0，有的话就加载对应数据
+    var n=0;
+    if(!window.location.hash){
+      window.location.hash = 'page=0';
+    }else{
+      n = window.location.hash.split('=')[1];
+      if(n*1<0){
+        n=0;
+        window.location.hash = 'page=0';
+      }
+    }
+    window.onhashchange = function(){
+      $('ul').html('');
+      arrT.length = arrL.length = 0;
+      for(var i=0;i<len;i++){
+        arrT.push(0);
+        arrL.push(ActW * i);
+      }
+      num = window.location.hash.split('=')[1];
+      xr();
+    }
+    $('p').click(function(){
+      if($(this).index()){
+        n++;
+      }else{
+        console.log(num)
+        n--;
+        if(n<0){
+          n=0;
+        }
+      }
+      window.location.hash = 'page='+n;
+    })
+
+
 
     $('ul').width(ActW*len-marginL);
 
@@ -54,12 +106,15 @@
     function xr(){
       $.ajax({
         url:'http://www.wookmark.com/api/json/popular?callback=?',
+        data:{
+          page:num
+        },
         dataType:'jsonp',
         success:function(data){
           $.each(data,function(i,e){
             const li = $('<li>')
-            const img = $(`<img src="${e.preview}"/>`)
             let iH = (e.height*oneW)/e.width;
+            const img = $(`<img src="${e.preview}" style="${iH}px"/>`)
             img[0].onload = function(){
               li.append(this);
               li.css({

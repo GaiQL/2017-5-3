@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  拿到接口，第一件事情，直接访问接口，看看是jsonp还是ajax。
+
+  当创建script并且插入到页面的时候（动态加载）都是异步，
+  这个时候本次请求已经提交，后端只要返回正确的数据fn()；
+  那么不管什么时候删除script前端都会接收到后端的数据。
+
+
+  当数据为固定格式的时候如果在不同场景下访问同一个接口，
+  多个函数会被最后一个函数给覆盖，
+
+  如果有种情况就最好，不同场景调用不同的函数就好了，也就是
+  说后端的接口的函数名是前端来定的，这样就能够解决我们的问题。
+
+  难管理，要在全局定义多个函数，随机定义
+  这样更利于我们操作
+
+
+  因为fnName要挂在全局  后端接口才能调用得到
+  所以，把函数挂在了window身上
+  但是jsonp这个框架中的数据逻辑，不可能每次都一样，
+  所以数据的处理不放在框架内，要提出去
+
+  先在settings下定义一个success，把业务逻辑提出去。
+  在window[fnName]拿到数据的时候，调用settings.success
+  并且把数据传给外面使用框架中的success函数中。
+</body>
+</html>

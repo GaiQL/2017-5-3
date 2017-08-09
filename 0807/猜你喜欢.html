@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div id="div"></div>
+  	<p id="p">123</p>
+  	<ul id="ul"></ul>
+  <script>
+  //JQ对象加上下标转成原生对象。
+    var arr = ['服装','游戏','电影','音乐'];
+  	let obj = {
+  		['num'+arr[0]]:['男装','女装','童装','唐装','汉服','西服'],
+  		['num'+arr[1]]:['魔兽世界','LOL','DOT2','炉石','风暴英雄','守望先锋'],
+  		['num'+arr[2]]:['战狼2','阿凡达','死神来了','生化危机','异形','速度与激情','地道战'],
+  		['num'+arr[3]]:['count on me','暧昧','爱如潮水','200x年的第一场雪','告白气球','壁虎漫步']
+  	}
+    var div = document.getElementById('div');
+    var p = document.getElementById('p');
+    var html='';
+    var arr2=[];
+    for(var i=0;i<arr.length;i++){
+      html+=`<button>${arr[i]}</button>`;
+    }
+    div.innerHTML = html;
+    //获取一下当前的lick；
+    if(getCookie('like') != -1){
+      var lhtml = '';
+      var likes = JSON.parse(getCookie('like'));
+      console.log(1);
+      for(var i=0;i<likes.length;i++){
+        lhtml += `<span>${likes[i]}<span>`;
+      }
+    }
+    p.innerHTML = lhtml;
+    var btn = div.getElementsByTagName('button');
+    var ul = document.getElementById('ul');
+    for(let i=0;i<btn.length;i++){
+      btn[i].onclick = function(){
+        var h = '';
+        for(var j=0;j<obj['num'+arr[i]].length;j++){
+          h+=`<li>${obj['num'+arr[i]][j]}</li>`
+        }
+        ul.innerHTML = h;
+        arr2.push(arr[i]);
+        console.log(arr2);
+        setCookie('like',JSON.stringify(arr2),2);
+        console.log(getCookie('like'))
+        
+        //点击就把当前的cookie种下；
+      }
+    }
+    function removeCookie(key,value){
+      setCookie(key,value,-1);
+    }
+    function setCookie(key,value,time){
+  		if(time){
+  			var iDate = new Date();
+  			iDate.setDate(iDate.getDate()+time);
+  			document.cookie = key+'='+value+';expires='+iDate
+  		}else{
+  			document.cookie = key+'='+value;
+  		}
+  	}
+    function getCookie(key){
+  		let str = document.cookie;
+  		let arr = str.split('; ');
+  		let val = null;
+
+  		for(var i=0;i<arr.length;i++){
+  			let arr2 = arr[i].split('=');
+  			if(arr2[0] == key){
+  				val = arr2[1];
+  				break;
+  			}
+  		}
+
+  		if(!val){
+  			return -1;
+  		}else{
+  			return val;
+  		}
+  	}
+  </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+    .blue{
+      background:skyblue;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="src/react.js"></script>
+    <script src="src/react-dom.js"></script>
+    <script src="src/browser.min.js"></script>
+    <script type="text/babel">
+      let H = React.createClass({
+        click:function(){
+          var numT = this.state.num;
+          numT++;
+          this.setState({
+            num:numT,
+            arr:['key','报错','让','key','独一无二不重复']
+          })
+        },
+        render:function(){
+          var arr = null;
+          arr =  this.state.arr.map(function(e,i){
+                    if(e == 'key'){
+                      return <li key={i} className="blue">{e}</li>
+                    }else{
+                      return <li key={i}>{e}</li>
+                    }
+                  })
+          return(
+            <div>
+              <h1 className="active">你好！世界！</h1>
+              <p>{this.state.num}</p>
+              <input type="text"/>
+              <button onClick={this.click}>点击</button>
+              <ul>{arr}</ul>
+            </div>
+          )
+        },
+        //this.state.num
+        getInitialState:function(){
+          return {
+            num:0,
+            arr:[]
+          };
+        }
+      })
+      ReactDOM.render(
+        <H />,
+        document.getElementById('app')
+      )
+    </script>
+  </body>
+</html>

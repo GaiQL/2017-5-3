@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    字组件继承父组件数据，然后进行修改自己数据
+    super(props)
+    每一次数据改变都会触发render，然后进入子组件时，只会走一次子组件的constructor
+
+    *********
+        子组件如果要继承父组件的数据，只会进constructor一次
+        当父组件的数据发生变化的时候，就不会再进constructor,会进render
+        constructor中要传props
+    ***********
+
+    propTyes是react提供的数据验证，专门用来验证props的数据类型是否为想要，
+
+
+    不能再render中操作state，会陷入死循环
+
+    如果没有在当前组件上设置ref(跨组件)，那么获取的值为undefined
+  </body>
+</html>

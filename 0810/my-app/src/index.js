@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 // import U1 from './comm/app';
-// import Todo from './comm/enter';
-import CToP from './comm/CtoP';
+import Todo from './comm/enter';
+// import CToP from './comm/CtoP';
 // import inputs from './comm/inputs';
 // ReactDOM.render(<inputs />, document.getElementById('root'));
-// ReactDOM.render(<Todo />, document.getElementById('root'));
-ReactDOM.render(<CToP />, document.getElementById('root'));
+ReactDOM.render(<Todo />, document.getElementById('root'));
+// ReactDOM.render(<CToP />, document.getElementById('root'));
 
 // ReactDOM.render(<U1 />, document.getElementById('root'));
 // registerServiceWorker();

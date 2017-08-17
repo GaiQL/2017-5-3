@@ -13,30 +13,38 @@ class App extends Component{
       boolean:true
     })
   }
+  change = () => {
+    this.setState({
+      boolean:false
+    })
+  }
   render(){
     let h=null;
     if(!this.state.boolean){
       h = <h1>你还没有登录</h1>
     }else{
-      h =  <h1>欢迎<button>登出</button></h1>
+      h =  <h1>欢迎<button onClick={this.change}>登出</button></h1>
     }
     return(
       <div>
         {h}
-        <Link to="/public">公共页面</Link><br/>
-        <Link to="/login">受限页面</Link>
+        <button>
+          <Link to="/public">公共页面</Link>
+        </button>
+        <button>
+          <Link to="/private">受限页面</Link>
+        </button>
         <Route path="/public" component={Public}/>
-        <Route path="/login" component={()=>{
-          return <Login changeBool={this.changeBool}/>
-        }}/>
-        <Route path="/public" component={()=>{
+        <Route path="/private" render={()=>{
           if(this.state.boolean){
             return <Private />;
           }else{
             return <Redirect to="/login"/>;
           }
-        }
-        }/>
+        }}/>
+        <Route path="/login" render={()=>{
+          return <Login changeBool={this.changeBool}/>
+        }}/>
       </div>
     )
   }
@@ -63,21 +71,21 @@ class Login extends Component{
   constructor(){
     super();
     this.state={
-      b:false
+      boo:false,
     }
   }
-  click = () =>{
+  click = () => {
     let {changeBool} = this.props;
-    setTimeout(()=>{
+    let {b} = this.state;
       changeBool();
       this.setState({
-        b:true
+        boo:true
       })
-    },500)
   }
   render(){
-    if(this.state.b){
-      return (<Redirect to="/private" />)
+    console.log(this.state.boo)
+    if(this.state.boo){
+      return(<Redirect to="/private" />)
     }
     return(
       <div>

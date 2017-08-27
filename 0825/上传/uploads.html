@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<link rel="stylesheet" href="css/demo.css">
+<style type="text/css">
+#bar{
+	height:4px;
+}
+#bar div{
+	height:4px;
+	background-color:#77B6FF;
+	width:0;
+}
+</style>
+</head>
+<body>
+	<section id="box">
+		<div id="bar">
+			<div></div>
+		</div>
+		<header>
+			<input type="file" name="" id="file">
+			<a href="javascript:;">上传</a>
+		</header>
+		<div class="drag">
+			<span>请将图片拖拽至此处</span>
+		</div>
+		<div class="preview">
+			<ul id="ul">
+
+			</ul>
+		</div>
+		<a href="javascript:;" id="upload">确认上传</a>
+	</section>
+<script src="jquery-3.2.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="uploads.js" type="text/javascript" charset="utf-8"></script>
+<script>
+class Uploads {
+	constructor(that){
+		/*
+			btn:点击按钮
+			readFile:用户选择的图片
+		*/
+		this.settings = {
+			readFile:null,
+			btn:null
+		}
+		this.arr = []; //每次选中图片的时候，把不重复的图片push到这个数组中
+		//当点击确定按钮的时候，一次性把数组中的数据全部上传。
+	}
+
+	init(opt){
+		let _this = this;
+		$.extend(this.settings,opt);
+
+		//选择图片
+		if(this.settings.readFile){
+
+			this.settings.readFile.change(function(ev){
+
+				_this.addPic(ev.target.files[0]);
+
+				//console.dir(ev.target.files[0]);
+
+				ev.target.value = '';
+			});
+		}
+		if(this.settings.btn){
+			//点击的时候去上传
+			this.settings.btn.click(function(){
+				_this.send();
+			});
+		}
+	}
+	//添加不重复的数据。
+	addPic(data){
+		if(!this.arr.some(e=>e.name == data.name)){
+			this.arr.push(data);
+		}
+	}
+	send(){
+		this.arr.forEach(e=>{
+			let fromData = new FormData;
+			fromData.append('file',e);
+			$.ajax({
+				url:'php/post_file.php',
+				method:'post',
+				data:fromData,
+				processData:false,
+				contentType:false,
+				success:function(data){
+					console.log(111);
+				}
+			});
+		});
+	}
+}
+$.fn.extend({
+
+	uploads(opt){
+
+		let uploads = new Uploads(this);
+
+		uploads.init(opt);
+
+		return this;
+	}
+
+});
+</script>
+<script type="text/javascript">
+	/*
+		1.上传
+		2.显示上传的图片
+		3.删除功能
+		4.拖拽
+		5.上传的进度
+	*/
+
+
+	$('#box').uploads({
+		readFile:$('#file'),
+		btn:$('#upload')
+	});
+
+
+</script>
+</body>
+</html>

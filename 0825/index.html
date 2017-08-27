@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      .hide{
+        display:none;
+      }
+      .show{
+        display:block;
+      }
+      .active{
+        background:yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box"></div>
+    <script src="jquery-3.1.1.js"></script>
+    <script type="text/javascript">
+      class Tab{
+        constructor(that){
+          //类的初始化
+          this.settings = {
+            btns:['新闻','体育','音乐','哈哈'],
+            cont:[
+              [
+                {content:'台风来了台风来了台风来了台风来了'},
+                {content:'台风来了台风来了台风来了台风来了'},
+                {content:'台风来了台风来了台风来了台风来了'}
+          ],'体育来了体育来了体育来了','音乐来了音乐来了音乐来了','哈哈哈哈哈哈哈哈'],
+          }
+          this.that = that
+        }
+        init(opt){
+          $.extend(this.settings,opt);
+          this.createBtns();
+          this.createCont();
+          this.Events();
+        }
+        createBtns(){
+          $.each(this.settings.btns,(i,e)=>{
+            let btn = $(`<button class="${i==0?'active':''}">${e}</button>`)
+            this.that.append(btn);
+          })
+        }
+        createCont(){
+          $.each(this.settings.cont,(i,e)=>{
+            let cont = $(`<div class="${i==0?'show':'hide'}"></div>`)
+            let inner = $(`<ul></ul>`);
+            if(e.push){
+              $.each(e,(i,e)=>{
+                let li = $(`<li>${e.content}</li>`)
+                inner.append(li);
+              })
+            }else{
+              let li = $(`<li>${e}</li>`)
+              inner.append(li);
+            }
+            cont.append(inner);
+            this.that.append(cont);
+          })
+        }
+        Events(){
+           let _this = this;
+           $('#box').find('button').click(function(){
+             _this.change($(this).index('button'));
+           })
+        }
+        change(index){
+          $('#box').find('button').eq(index).addClass('active').siblings('button').removeClass('active');
+          $('#box').find('div').eq(index).addClass('show').removeClass('hide').siblings('div').addClass('hide').removeClass('show');
+        }
+      }
+      // $.isArray()  arr.push
+      $.fn.extend({
+        tabs:function(opt){
+          let tab = new Tab(this); //调用的JQ对象
+          tab.init(opt);
+          return this; //为了链式操作
+        }
+      })
+    </script>
+    <script>
+      $('#box').tabs();
+    </script>
+  </body>
+</html>

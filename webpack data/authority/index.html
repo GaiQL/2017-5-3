@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- <script src="https://unpkg.com/lodash@4.16.6"></script> -->
+    <!-- script标签之间存在隐式依赖，Index.js执行前还依赖于页面中引入的lodash，之所以
+  说是为隐式的是因为Index.js并未显示声名需要引入lodash,只是假定推测有一个全局变量_
+
+      使用这种方式去管理javascript项目存在的问题：
+      1、无法立即体现，脚本的执行依赖于外部扩展库。
+      2、如果依赖不存在，或者引入顺序错误，程序将无法正常运行。
+      3、如果依赖被引用但是没有被使用，浏览器将被迫加载无用代码。
+
+      去使用webpack管理这些脚本。
+-->
+  </head>
+  <body>
+    <script src="src/index.js">
+
+    </script>
+  </body>
+</html>
